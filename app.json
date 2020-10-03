@@ -1,0 +1,12 @@
+{
+  "name": "AnotherChat",
+  "displayName": "AnotherChat",
+  "expo": {
+    "name": "AnotherChat",
+    "slug": "AnotherChat",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

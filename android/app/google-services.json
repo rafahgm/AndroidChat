@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "853032706819",
+    "firebase_url": "https://android-chat-d896c.firebaseio.com",
+    "project_id": "android-chat-d896c",
+    "storage_bucket": "android-chat-d896c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853032706819:android:d0766a19c300de4643ff36",
+        "android_client_info": {
+          "package_name": "com.anotherchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853032706819-u7v53ng5kponkqqjj0epkrmefsr0auv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKhNxsi3RBj9B7cSobi6p3jbQnu8dQYFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853032706819-u7v53ng5kponkqqjj0epkrmefsr0auv7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
