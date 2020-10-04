@@ -6,8 +6,10 @@ import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import Loading from '../components/Loading'
 import { FlatList } from 'react-native-gesture-handler';
+import useStatusBar from '../util/StatusBar/'
 
 export default function HomeScreen({navigation}) {
+    useStatusBar('light-content', '#6646EE');
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(true);
 

@@ -4,10 +4,11 @@ import { IconButton } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-
+import useStatusBar from '../util/StatusBar/'
 
 
 export default function AddRoomScreen({navigation}) {
+    useStatusBar('dark-content', '#F5F5F5');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
