@@ -5,32 +5,66 @@ import { GiftedChat, Bubble, Composer, Send } from 'react-native-gifted-chat';
 import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore'
 
-function renderBubble(props) {
-    return(
-        <Bubble
-            {...props}
-            wrapperStyle={{
-                right: {
-                    backgroundColor: '#6646EE'
-                }
-            }}
-
-            textStyle={{
-                right: {
-                    color: '#FFF'
-                }
-            }}
-        />
-    )
-}
-
 export default function RoomScreen() {
+    function renderBubble(props) {
+        return(
+            <Bubble
+                {...props}
+                wrapperStyle={{
+                    right: {
+                        backgroundColor: '#6646EE'
+                    }
+                }}
+    
+                textStyle={{
+                    right: {
+                        color: '#FFF'
+                    }
+                
+                }}
+            />
+        )
+    }
+
+    function renderInputToolbar(props) {
+        return(
+            <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                paddingBottom: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingHorizontal: 10
+            }}>
+                <Composer {...props}
+                    placeholder='Digite aqui...'
+                    textInputStyle={{
+                        backgroundColor: '#EBEBEB',
+                        paddingHorizontal: 12,
+                        borderRadius: 20
+                    }}
+                />
+                <Send {...props} containerStyle={{
+                    width: 48,
+                    height: 48
+                }} >
+                    <IconButton 
+                        icon='send-circle'
+                        size={48}
+                        color='#6646ee'
+                        style={{
+                            position: 'absolute',
+                            bottom: -18,
+                            right: -18
+                        }}
+                    />
+                </Send>
+            </View>
+        )
+    }
+
     const {user} = useContext(AuthContext);
     const currentUser = user.toJSON();
-
-    useEffect(() => {
-        console.log({user});
-    });
 
     const [messages, setMessages] = useState([
           /**
@@ -64,9 +98,10 @@ export default function RoomScreen() {
             messages={messages}
             onSend={newMessage => handleSend(newMessage)}
             user={{_id: 1}}
-            minComposerHeight={70}
+            minComposerHeight={44}
             minInputToolbarHeight={70} 
             renderBubble={renderBubble}
+            renderInputToolbar={renderInputToolbar}
             alwaysShowSend
           />
     )
