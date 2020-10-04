@@ -5,7 +5,12 @@ import { GiftedChat, Bubble, Composer, Send } from 'react-native-gifted-chat';
 import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore'
 
-export default function RoomScreen() {
+export default function RoomScreen({route}) {
+    const { thread } = route.params;
+    const {user} = useContext(AuthContext);
+    const currentUser = user.toJSON();
+    const [messages, setMessages] = useState([]);
+
     function renderBubble(props) {
         return(
             <Bubble
@@ -63,41 +68,60 @@ export default function RoomScreen() {
         )
     }
 
-    const {user} = useContext(AuthContext);
-    const currentUser = user.toJSON();
+    async function handleSend(messages) {
+        const text = messages[0].text;
 
-    const [messages, setMessages] = useState([
-          /**
-     * Mock message data
-     */
-    // example of system message
-    {
-        _id: 0,
-        text: 'New room created.',
-        createdAt: new Date().getTime(),
-        system: true
-      },
-      // example of chat message
-      {
-        _id: 1,
-        text: 'Lorem Ipsum',
-        createdAt: new Date().getTime(),
-        user: {
-          _id: 2,
-          name: 'FUCK YOU'
-        }
-      }
-    ]);
-
-    function handleSend(newMessage = []) {
-        setMessages(GiftedChat.append(messages, newMessage));
+        firestore()
+            .collection('THREADS')
+            .doc(thread._id)
+            .collection('MESSAGES')
+            .add({
+                text,
+                createdAt: new Date().getTime(),
+                user: {
+                    _id: currentUser.uid,
+                    email: currentUser.email
+                }
+            });
     }
+
+    useEffect(() => {
+        const messagesListener = firestore()
+            .collection('THREADS')
+            .doc(thread._id)
+            .collection('MESSAGES')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot(querySnapshot => {
+                const messages = querySnapshot.docs.map( doc => {
+                    const firebaseData = doc.data();
+
+                    const data = {
+                        _id: doc.id,
+                        text: '',
+                        createdAt: new Date().getTime(),
+                        ...firebaseData
+                    }
+
+                    if(!firebaseData.system) {
+                        data.user = {
+                            ...firebaseData.user,
+                            name: firebaseData.user.email
+                        };
+                    }
+
+                    return data;
+                });
+                setMessages(messages);
+            });
+
+            return () => messagesListener();
+    }, []);
 
     return(
         <GiftedChat
             messages={messages}
-            onSend={newMessage => handleSend(newMessage)}
-            user={{_id: 1}}
+            onSend={handleSend}
+            user={{ _id: currentUser.uid }}
             minComposerHeight={44}
             minInputToolbarHeight={70} 
             renderBubble={renderBubble}
